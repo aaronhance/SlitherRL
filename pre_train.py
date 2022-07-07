@@ -39,7 +39,7 @@ class DQN:
     batch_size = 32
     model = None
     optimizer = keras.optimizers.Adam(lr=lr)
-    loss_func = keras.losses.mean_squared_error
+    loss_func = keras.losses.categorical_crossentropy
     state_size = (160, 160, 3)
     action_size = 4
 
@@ -78,15 +78,18 @@ data = pickle.load(open("samples.pickle", "rb"))
 
 data = np.array(data)
 
-x = np.array([i['screen'] for i in data])
-y = np.array([i['keys'] for i in data])
+x = np.array([i['screen'] for i in data], dtype=np.float32)
+y = np.array([i['keys'] for i in data], dtype=np.float32)
+
+data = []
+gc.collect()
 
 print(x[0].shape)
 print(x[-1].shape)
 print(y[0].shape)
 print(y[-1].shape)
 
-print(y[:20])
+print(y[520:590])
 
 dqn = DQN()
 

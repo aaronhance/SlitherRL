@@ -194,11 +194,13 @@ for sample in samples:
     #convert "keys" (left, up, right) array of string to array of int (0 or 1)
     actions = [0] * 4
 
-    if(sample['keys']['left'] == 'true'):
+    print(sample['keys'])
+
+    if(sample['keys']['left'] == True):
         actions[1] = 1
-    elif(sample['keys']['up'] == 'true'):
+    elif(sample['keys']['up'] == True):
         actions[3] = 1
-    elif(sample['keys']['right'] == 'true'):
+    elif(sample['keys']['right'] == True):
         actions[2] = 1
     else:
         actions[0] = 1
