@@ -69,13 +69,13 @@ print(y[-1].shape)
 
 print(y[520:590])
 
-tuner = kt.tuners.Hyperband(build_model, max_epochs=2, factor=3, objective='val_accuracy')
+tuner = kt.Hyperband(build_model, max_epochs=10, factor=3, objective='val_accuracy')
 stop_early = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=5)
 
 tuner.search(x, y, epochs=2, validation_split=0.1, callbacks=[stop_early])
 
-best_hps=tuner.get_best_hyperparameters(num_trials=1)[0]
-print(best_hps)
+print(tuner.results_summary())
+
 best_model = tuner.get_best_models(1)[0]
 
 # model = dqn.model
