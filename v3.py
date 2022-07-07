@@ -538,7 +538,7 @@ while True:
 
         if count % print_interval == 0:
             #call gc
-            gc.collect()
+            # gc.collect()
             print("episode: {} score: {} reward: {} time: {}".format(episode_count, score, reward, time.perf_counter() - t1))
     # except Exception as e:
         #     print(e)    

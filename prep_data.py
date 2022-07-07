@@ -188,20 +188,21 @@ for file in files:
     gc.collect()
 
 for sample in samples:
-    if int(sample['score']) < 100:
-        continue
+    # if int(sample['score']) < 100:
+    #     continue
 
     #convert "keys" (left, up, right) array of string to array of int (0 or 1)
     actions = [0] * 4
 
     if(sample['keys']['left'] == 'true'):
         actions[1] = 1
-    if(sample['keys']['up'] == 'true'):
+    elif(sample['keys']['up'] == 'true'):
         actions[3] = 1
-    if(sample['keys']['right'] == 'true'):
+    elif(sample['keys']['right'] == 'true'):
         actions[2] = 1
-
-    sample['keys'] = actions
+    else:
+        actions[0] = 1
+    sample['keys'] = np.array(actions)
 
     #create state from screen
     snakes = sample['screen'][0]
@@ -209,7 +210,7 @@ for sample in samples:
     player = sample['screen'][2]
 
     state = env.get_state(player ,snakes, food)
-    sample['screen'] = state
+    sample['screen'] = np.array(state)
 
 
 print(len(samples))
