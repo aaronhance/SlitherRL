@@ -22,14 +22,14 @@ for gpu in gpus:
 
   #build model
 def build_model(hp):
-    hp_filter_count_1 = hp.Choice('filter_count', values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    hp_filter_count_1 = hp.Choice('filter_count', values=[1, 2, 4, 5, 7, 10, 14, 16, 20, 25])
     hp_kernel_size_1 = hp.Choice('kernel_size', values=[3, 5, 7, 9, 11, 13, 15])
 
-    hp_filter_count_2 = hp.Choice('filter_count_2', values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    hp_filter_count_2 = hp.Choice('filter_count_2', values=[1, 2, 4, 5, 7, 10, 14, 16, 20, 25])
     hp_kernel_size_2 = hp.Choice('kernel_size_2', values=[3, 5, 7, 9, 11, 13, 15])
 
-    hp_filter_count_3 = hp.Choice('filter_count_2', values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-    hp_kernel_size_3 = hp.Choice('kernel_size_2', values=[3, 5, 7, 9, 11, 13, 15])
+    hp_filter_count_3 = hp.Choice('filter_count_3', values=[1, 2, 4, 5, 7, 10, 14, 16, 20, 25])
+    hp_kernel_size_3 = hp.Choice('kernel_size_3', values=[3, 5, 7, 9, 11, 13, 15])
 
     #model
     model = keras.Sequential()
@@ -69,7 +69,7 @@ print(y[-1].shape)
 
 print(y[520:590])
 
-tuner = kt.Hyperband(build_model, max_epochs=10, factor=3, objective='val_accuracy')
+tuner = kt.Hyperband(build_model, max_epochs=2, factor=3, objective='val_accuracy')
 stop_early = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=5)
 
 tuner.search(x, y, epochs=2, validation_split=0.1, callbacks=[stop_early])
