@@ -1,8 +1,7 @@
-# Copyright 2022 Aaron Hance
-
-# Use of this source code is governed by an MIT-style
-# license that can be found in the LICENSE file or at
-# https://opensource.org/licenses/MIT.
+# copyright (c) 2022 Aaron Hance
+# slither_data.js is freely distributable under the MIT license.
+# http://www.opensource.org/licenses/mit-license.php
+    
 
 import numpy as np
 import json
@@ -27,6 +26,9 @@ import os
 import gc
 import cv2
 
+gpus = tf.config.experimental.list_physical_devices('GPU')
+for gpu in gpus:
+  tf.config.experimental.set_memory_growth(gpu, True)
 
 class Env: 
     width, height = 160, 160
@@ -197,10 +199,7 @@ class Env:
         #flip top and bottom
         snake_state = np.flipud(snake_state)
 
-
-
         state = snake_state + state
-
 
         #update plot
         image = state * 255
@@ -292,15 +291,15 @@ class DQN:
     #learning rate
     lr = 0.001
     #discount rate
-    discount_rate = 0.95
+    discount_rate = 0.93
     #exploration rate
-    epsilon = 0.60
+    epsilon = 0.30
     #epsilon decay
     epsilon_decay = 0.999
     #epsilon min    
     epsilon_min = 0.01
     #batch size
-    batch_size = 256
+    batch_size = 200
     #memory size
     memory_size = 1500
     #memory
@@ -345,19 +344,17 @@ class DQN:
     def build_model(self):
         #model
         model = keras.Sequential()
-        #convolutional layer
+        #convolutional layers
         model.add(keras.layers.Conv2D(8, (3, 3), activation='relu', input_shape=self.state_size))
-        #convolutional layer
-        model.add(keras.layers.Conv2D(8, (3, 3), activation='relu', input_shape=self.state_size))
+        model.add(keras.layers.Conv2D(16, (5, 5), activation='relu', input_shape=self.state_size))
+        model.add(keras.layers.Conv2D(16, (7, 7), activation='relu', input_shape=self.state_size))
         #max pooling layer
         model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
         #flatten layer
         model.add(keras.layers.Flatten())
         #dense layer
-        model.add(keras.layers.Dense(48, activation='relu'))
-        model.add(keras.layers.Dense(64, activation='selu', kernel_initializer=tf.keras.initializers.lecun_normal(seed=None)))
-        model.add(keras.layers.Dense(32, activation='relu'))
-        #dense layer
+        model.add(keras.layers.Dense(16, activation='relu'))
+        #output layer
         model.add(keras.layers.Dense(self.action_size, activation='softmax'))
         #return model
         return model
@@ -533,6 +530,9 @@ while True:
         
         if reward < -1:
             reward = -1
+
+        if reward == 0:
+            reward = -0.01
 
         dqn.remember(frame, action, reward, screen_next, False)
 

@@ -1,0 +1,4 @@
+#ignore .json and .h5
+*.json
+*.h5
+*.pickle
