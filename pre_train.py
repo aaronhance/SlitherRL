@@ -3,29 +3,16 @@
 # http://www.opensource.org/licenses/mit-license.php
     
 
-from cgi import test
 import numpy as np
 import json
 import time
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.service import Service as ChromeService
-from sqlalchemy import false
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.support.ui import WebDriverWait as WebDriverWait
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 from PIL import Image
-from concurrent.futures import thread
-from itertools import count
 import tensorflow as tf
 import tensorflow.keras as keras
 from tensorflow.keras import initializers
 import random
 import os
 import gc
-import cv2
 import pickle
 import keras_tuner as kt
 
@@ -95,4 +82,4 @@ best_model = tuner.get_best_models(1)[0]
 # model.fit(x, y, batch_size=dqn.batch_size, epochs=1, verbose=1, validation_split=0.1)
 
 #save model weights
-best_model.save_weights('v3model.h5')
+#model.save_weights('v3model.h5')
